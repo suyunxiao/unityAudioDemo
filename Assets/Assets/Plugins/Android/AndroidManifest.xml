@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:name="com.nbsdk.main.audio"
+    package="com.henzikele.luna"
+    android:appComponentFactory="android.support.v4.app.CoreComponentFactory"
+    android:versionCode="1" android:versionName="1.0"
+    tools:replace="android:appComponentFactory"
+    android:installLocation="preferExternal">
+  <supports-screens android:anyDensity="true" android:largeScreens="true" android:normalScreens="true" android:smallScreens="true" android:xlargeScreens="true" />
+  <application android:usesCleartextTraffic="true" android:isGame="true"
+      android:banner="@drawable/app_banner"
+      android:icon="@mipmap/app_icon"
+	   android:label="audioTest"
+      android:name="com.nbsdk.main.audio"
+      >
+    <activity android:screenOrientation="fullSensor" android:launchMode="singleTask"
+        android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density"
+        android:hardwareAccelerated="false"
+        android:name="com.henzikele.luna.UnityPlayerActivity">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+        <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+      </intent-filter>
+      <meta-data android:name="unityplayer.UnityActivity" android:value="true" />
+    </activity>
+    <meta-data android:name="unity.build-id" android:value="296b9c30-18c4-4625-bac5-d62761d39aca" />
+    <meta-data android:name="unity.splash-mode" android:value="0" />
+    <meta-data android:name="unity.splash-enable" android:value="True" />
+    <uses-library android:name="org.apache.http.legacy" android:required="false" />
+
+  </application>
+  <uses-feature android:glEsVersion="0x00020000" />
+  <uses-feature android:name="android.software.leanback" android:required="false" />
+  <uses-permission android:name="android.permission.INTERNET" />
+  <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
+  <uses-feature android:name="android.hardware.touchscreen.multitouch" android:required="false" />
+  <uses-feature android:name="android.hardware.touchscreen.multitouch.distinct" android:required="false" />
+  <!-- Midas需要，向SD卡写入文件，非必要权限  -->
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+</manifest>
