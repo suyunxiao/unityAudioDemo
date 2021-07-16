@@ -8,6 +8,7 @@
 using Modle;
 using UnityEngine;
 using UnityEngine.UI;
+using static ChatAudio.LongButtom;
 
 namespace ChatAudio
 {
@@ -46,7 +47,7 @@ namespace ChatAudio
         /// <summary>
         /// 录音频率
         /// </summary>
-        private string _frequency = "44100";
+        private int _frequency = 44100;
 
         /// <summary>
         /// 录音最大时长
@@ -67,13 +68,15 @@ namespace ChatAudio
         private void addEventList ()
         {
             deviceBtn.touchCall = onTouchAudioState;
-            playMp3.onClick.AddListener(onPlayMp3);
+            deviceBtn.cancelCall = onCancelCallAudio;
+            playMp3.onClick.AddListener(onSaveMp3File);
         }
 
         private void removeEventList ()
         {
             deviceBtn.touchCall = null;
-            playMp3.onClick.RemoveListener(onPlayMp3);
+            deviceBtn.cancelCall = null;
+            playMp3.onClick.RemoveListener(onSaveMp3File);
         }
 
         /// <summary>
@@ -91,9 +94,9 @@ namespace ChatAudio
             return isHave;
         }
 
-        private void onTouchAudioState(bool state)
+        private void onTouchAudioState(LongTouchCallType data)
         {
-            if(state)
+            if(data.state)
             {
                 audioStateText.text = "按下";
                 beginRecording();
@@ -102,16 +105,45 @@ namespace ChatAudio
             {
                 audioStateText.text = "抬起";
                 stopRecording();
+                saveAudioFile((int)data.longTouchTime);
             }
         }
 
-        private void onPlayMp3()
+        /// <summary>
+        /// 取消录音
+        /// </summary>
+        /// <param name="state"></param>
+        private void onCancelCallAudio(bool state)
         {
-            //保存录音
-            string path = $"{AudioModle.AssetCachesDir}/audio/world/Audio2021Uid001.mp3";
+            audioStateText.text = "取消录音";
+            stopRecording();
+        }
+
+        private void onSaveMp3File()
+        {
+            playAudio(audioSource.clip,new Vector3());
+        }
+
+        /// <summary>
+        /// 保存录音
+        /// </summary>
+        /// <param name="url"></param>
+        private void saveAudioFile(int time = 1,string url = "/audio/world/Audio2021Uid001.mp3")
+        {
+            string path = $"{AudioModle.AssetCachesDir}{url}";
             if (audioSource.clip != null)
             {
-                AudioModle.SaveWav(path, audioSource.clip);
+                int position = time * _frequency; 
+                Microphone.GetPosition(null);
+                AudioClip clip = AudioClip.Create(audioSource.name,
+                                        position,
+                                        audioSource.clip.channels,
+                                        audioSource.clip.frequency,
+                                        false);
+                float[] data = new float[position * audioSource.clip.channels];
+                audioSource.clip.GetData(data,0);
+                clip.SetData(data,0);
+                AudioModle.SaveWav(path, clip);
             }
             else
             {
@@ -129,7 +161,7 @@ namespace ChatAudio
             audioSource.loop = false;
             audioSource.mute = true;
             audioStateText.text = "开始录音";
-            audioSource.clip = Microphone.Start(null, true, _maxAudioTime, int.Parse(_frequency));
+            audioSource.clip = Microphone.Start(null, true, _maxAudioTime, _frequency);
             audioSource.Play();
         }
 
@@ -140,8 +172,7 @@ namespace ChatAudio
                 return;
             }
             Microphone.End(null);
-            audioSource.Stop();
-            playAudio(audioSource.clip,new Vector3());
+            //audioSource.Stop();
         }
 
         private void playAudio(AudioClip clip, Vector3 pos)

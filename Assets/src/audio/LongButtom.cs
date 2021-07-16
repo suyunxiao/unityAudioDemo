@@ -5,11 +5,8 @@
  */
 //======================================================================================
 
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -23,9 +20,18 @@ namespace ChatAudio
         /// <summary>
         /// 按下或者抬起响应
         /// </summary>
-        public UnityAction<bool> touchCall;
+        public UnityAction<LongTouchCallType> touchCall;
+
+        /// <summary>
+        /// 取消响应
+        /// </summary>
+        public UnityAction<bool> cancelCall;
 
         private bool touchState = false;
+
+        private double time = 0;
+
+        private LongTouchCallType longCall = new LongTouchCallType();
 
         /// <summary>
         /// 按下
@@ -33,12 +39,26 @@ namespace ChatAudio
         /// <param name="eventData"></param>
         public override void OnPointerDown(PointerEventData eventData)
         {
-            setTouchCallState(true);
+            time = GetTimeStamp();
+            longCall.longTouchTime = time;
+            longCall.state = true;
+            setTouchCallState(longCall);
         }
 
         public override void OnPointerUp(PointerEventData eventData)
         {
-            setTouchCallState(false);
+            longCall.longTouchTime = GetTimeStamp() - time + 1;
+            Debug.Log("TouchTime:" + longCall.longTouchTime);
+            GetTimeStamp();
+            if (eventData.position.y - eventData.pressPosition.y > 50)
+            {
+                setCancelCall(true);
+            }
+            else
+            {
+                longCall.state = false;
+                setTouchCallState(longCall);
+            }
         }
 
         //public override void OnPointerExit(PointerEventData eventData)
@@ -46,17 +66,50 @@ namespace ChatAudio
         //    setTouchCallState(false);
         //}
 
-        private void setTouchCallState(bool state)
+        private void setTouchCallState(LongTouchCallType data)
         {
-            if(touchState == state)
+            if(touchState == data.state)
             {
                 return;
             }
-            touchState = state;
+            touchState = data.state;
             if (touchCall != null)
             {
-                touchCall(state);
+                touchCall(data);
             }
         }
+
+        private void setCancelCall(bool state)
+        {
+            if( cancelCall!= null)
+            {
+                
+                cancelCall(state);
+            }
+        }
+
+        /// <summary>
+        /// 获取时间戳
+        /// </summary>
+        /// <returns></returns>
+        public double GetTimeStamp()
+        {
+            TimeSpan ts = DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            return Math.Round(ts.TotalSeconds);
+        }
+
+        public struct LongTouchCallType
+        {
+            /// <summary>
+            /// 按钮状态
+            /// </summary>
+            public bool state;
+
+            /// <summary>
+            /// 长按时间
+            /// </summary>
+            public double longTouchTime;
+        }
+
     }
 }
