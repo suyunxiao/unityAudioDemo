@@ -54,39 +54,39 @@ namespace ChatAudio
         /// </summary>
         private int _maxAudioTime = 200;
 
-        protected void OnEnable ()
+        protected void OnEnable()
         {
-            addEventList ();
+            addEventList();
             Application.RequestUserAuthorization(UserAuthorization.Microphone);
         }
 
-        protected void OnDisable ()
+        protected void OnDisable()
         {
-            removeEventList ();
+            removeEventList();
         }
 
-        private void addEventList ()
+        private void addEventList()
         {
             deviceBtn.touchCall = onTouchAudioState;
             deviceBtn.cancelCall = onCancelCallAudio;
-            playMp3.onClick.AddListener(onSaveMp3File);
+            playMp3.onClick.AddListener(onPlayRes);
         }
 
-        private void removeEventList ()
+        private void removeEventList()
         {
             deviceBtn.touchCall = null;
             deviceBtn.cancelCall = null;
-            playMp3.onClick.RemoveListener(onSaveMp3File);
+            playMp3.onClick.RemoveListener(onPlayRes);
         }
 
         /// <summary>
         /// 是否存在麦克风设备
         /// </summary>
-        public bool GetMicrophoneDevice ()
+        public bool GetMicrophoneDevice()
         {
             bool isHave = true;
-            string [] mDevice = Microphone.devices;
-            if ( mDevice.Length == 0 )
+            string[] mDevice = Microphone.devices;
+            if (mDevice.Length == 0)
             {
                 isHave = false;
                 audioStateText.text = "找不到麦克风设备";
@@ -96,7 +96,7 @@ namespace ChatAudio
 
         private void onTouchAudioState(LongTouchCallType data)
         {
-            if(data.state)
+            if (data.state)
             {
                 audioStateText.text = "按下";
                 beginRecording();
@@ -119,21 +119,21 @@ namespace ChatAudio
             stopRecording();
         }
 
-        private void onSaveMp3File()
+        private void onPlayRes()
         {
-            playAudio(audioSource.clip,new Vector3());
+            playAudio(audioSource.clip, new Vector3());
         }
 
         /// <summary>
         /// 保存录音
         /// </summary>
         /// <param name="url"></param>
-        private void saveAudioFile(int time = 1,string url = "/audio/world/Audio2021Uid001.mp3")
+        private void saveAudioFile(int time = 1, string url = "/audio/world/Audio2021Uid001.mp3")
         {
             string path = $"{AudioModle.AssetCachesDir}{url}";
             if (audioSource.clip != null)
             {
-                int position = time * _frequency; 
+                int position = time * _frequency;
                 Microphone.GetPosition(null);
                 AudioClip clip = AudioClip.Create(audioSource.name,
                                         position,
@@ -141,8 +141,8 @@ namespace ChatAudio
                                         audioSource.clip.frequency,
                                         false);
                 float[] data = new float[position * audioSource.clip.channels];
-                audioSource.clip.GetData(data,0);
-                clip.SetData(data,0);
+                audioSource.clip.GetData(data, 0);
+                clip.SetData(data, 0);
                 AudioModle.SaveWav(path, clip);
             }
             else
@@ -177,10 +177,11 @@ namespace ChatAudio
 
         private void playAudio(AudioClip clip, Vector3 pos)
         {
-            if( clip != null )
+            if (clip != null)
             {
                 audioStateText.text = "开始播放录音";
-                AudioSource.PlayClipAtPoint(clip, pos);
+                audioSource.Play();
+                //AudioSource.PlayClipAtPoint(clip, pos);
             }
             else
             {

@@ -1,6 +1,6 @@
 Android
 PlayerPath?
-F:/word/LCDemo/auidoDemo/audioDemo/APK/audioDemo2.apk
+F:/word/LCDemo/auidoDemo/unityAudioDemo/APK/audioDemo2.apk
 SceneListBegin?
 Assets/Scenes/main.unity
 SceneListEnd?

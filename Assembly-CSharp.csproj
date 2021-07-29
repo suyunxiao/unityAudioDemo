@@ -67,7 +67,6 @@
     <Compile Include="Assets\src\audio\AudioModle.cs" />
     <Compile Include="Assets\src\audio\ChatAudioSource.cs" />
     <Compile Include="Assets\src\audio\LongButtom.cs" />
-    <None Include="Assets\Assets\Plugins\Android\AndroidManifest.xml" />
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>F:/word/LCDemo/auidoDemo/unityAudioDemo/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>

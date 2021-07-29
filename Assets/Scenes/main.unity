@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: 218850311}
   - component: {fileID: 218850310}
   - component: {fileID: 218850309}
-  - component: {fileID: 218850312}
+  - component: {fileID: 218850313}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -216,7 +216,7 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!114 &218850312
+--- !u!114 &218850313
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -231,7 +231,7 @@ MonoBehaviour:
   audioSource: {fileID: 1569541376}
   deviceBtn: {fileID: 1583327447}
   audioStateText: {fileID: 2006323774}
-  audioTest: {fileID: 8300000, guid: 81b69c4c3266df64eaf5ff68ac6026f2, type: 3}
+  audioTest: {fileID: 8300000, guid: e0d651514167bf74eaaa3a7b2e388344, type: 3}
   playMp3: {fileID: 1801189874}
   pathUrl: {fileID: 1079801995}
 --- !u!1 &652944838
@@ -708,7 +708,7 @@ GameObject:
   - component: {fileID: 1583327448}
   - component: {fileID: 1583327447}
   m_Layer: 5
-  m_Name: Button
+  m_Name: startAudio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -822,7 +822,7 @@ GameObject:
   - component: {fileID: 1801189875}
   - component: {fileID: 1801189874}
   m_Layer: 5
-  m_Name: saveBtn
+  m_Name: playBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

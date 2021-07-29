@@ -14,7 +14,7 @@ using UnityEngine.UI;
 
 namespace ChatAudio
 {
-    class LongButtom : Button,IPointerDownHandler, IPointerUpHandler
+    public class LongButtom : Button,IPointerDownHandler, IPointerUpHandler
     {
 
         /// <summary>
