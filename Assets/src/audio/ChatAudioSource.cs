@@ -52,7 +52,7 @@ namespace ChatAudio
         /// <summary>
         /// 录音最大时长
         /// </summary>
-        private int _maxAudioTime = 200;
+        private int _maxAudioTime = 15;
 
         protected void OnEnable()
         {
@@ -121,7 +121,7 @@ namespace ChatAudio
 
         private void onPlayRes()
         {
-            playAudio(audioSource.clip, new Vector3());
+            AudioSource.PlayClipAtPoint(audioSource.clip, new Vector3());
         }
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace ChatAudio
             {
                 int position = time * _frequency;
                 Microphone.GetPosition(null);
-                AudioClip clip = AudioClip.Create(audioSource.name,
+                AudioClip clip = AudioClip.Create("Audio2021Uid002",
                                         position,
                                         audioSource.clip.channels,
                                         audioSource.clip.frequency,
@@ -143,7 +143,6 @@ namespace ChatAudio
                 float[] data = new float[position * audioSource.clip.channels];
                 audioSource.clip.GetData(data, 0);
                 clip.SetData(data, 0);
-                AudioModle.SaveWav(path, clip);
             }
             else
             {
@@ -163,6 +162,8 @@ namespace ChatAudio
             audioStateText.text = "开始录音";
             audioSource.clip = Microphone.Start(null, true, _maxAudioTime, _frequency);
             audioSource.Play();
+            //audioSource.pitch = 1;
+            pathUrl.text = "beginRecording audio:" + audioSource.pitch;
         }
 
         private void stopRecording()
@@ -172,21 +173,7 @@ namespace ChatAudio
                 return;
             }
             Microphone.End(null);
-            //audioSource.Stop();
-        }
-
-        private void playAudio(AudioClip clip, Vector3 pos)
-        {
-            if (clip != null)
-            {
-                audioStateText.text = "开始播放录音";
-                audioSource.Play();
-                //AudioSource.PlayClipAtPoint(clip, pos);
-            }
-            else
-            {
-                audioStateText.text = "录音clip不存在";
-            }
+            audioSource.Stop();
         }
 
     }
